@@ -256,19 +256,17 @@ export const Layout: React.FC<LayoutProps> = ({
           isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Close Button inside Drawer */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={() => setIsDrawerOpen(false)}
-            aria-label="Cerrar menú de navegación"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        {/* Close Button inside Drawer - Absolutely positioned to save vertical space */}
+        <button
+          onClick={() => setIsDrawerOpen(false)}
+          aria-label="Cerrar menú de navegación"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all cursor-pointer z-50"
+        >
+          <X className="w-5 h-5" />
+        </button>
         
         {/* Scrollable Container for Drawer Content */}
-        <div className="flex-1 overflow-y-auto pr-1">
+        <div className="flex-1 overflow-y-auto pr-1 mt-2">
           {renderSidebarContent()}
         </div>
       </aside>
@@ -276,13 +274,13 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 bg-bg-dark overflow-y-auto">
         {/* Header bar */}
-        <header className="h-16 border-b border-border-subtle flex justify-between items-center px-6 shrink-0 bg-bg-card/50 backdrop-blur-md sticky top-0 z-30">
+        <header className="h-16 border-b border-border-subtle flex justify-between items-center px-4 md:px-6 shrink-0 bg-bg-card/50 backdrop-blur-md sticky top-0 z-30">
           <div className="flex items-center gap-2">
             {/* Hamburger Menu Button - MOBILE ONLY */}
             <button
               onClick={() => setIsDrawerOpen(true)}
               aria-label="Abrir menú de navegación"
-              className="md:hidden p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all cursor-pointer mr-2"
+              className="md:hidden p-2 -ml-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all cursor-pointer mr-2"
             >
               <Menu className="w-6 h-6" />
             </button>
