@@ -278,7 +278,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                               />
                               <div className="min-w-0 w-full">
                                 <h4 className="text-sm md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.homeTeam.name)}</h4>
-                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.homeTeam.ranking}</span>
+                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.homeTeam.ranking > 85 ? '+85' : heroMatch.homeTeam.ranking}</span>
                               </div>
                             </div>
 
@@ -290,7 +290,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-5/12 justify-end text-center md:text-right">
                               <div className="min-w-0 w-full order-2 md:order-1">
                                 <h4 className="text-sm md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.awayTeam.name)}</h4>
-                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.awayTeam.ranking}</span>
+                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.awayTeam.ranking > 85 ? '+85' : heroMatch.awayTeam.ranking}</span>
                               </div>
                               <img
                                 src={getFlagUrl(heroMatch.awayTeam.code, 40)}

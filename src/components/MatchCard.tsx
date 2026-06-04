@@ -97,7 +97,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               {translateTeamName(match.homeTeam.name)}
             </span>
             <span className="text-[10px] text-slate-400 uppercase mt-0.5 tracking-wider font-medium">
-              Puesto #{match.homeTeam.ranking}
+              Puesto #{match.homeTeam.ranking > 85 ? '+85' : match.homeTeam.ranking}
             </span>
           </div>
 
@@ -129,7 +129,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               {translateTeamName(match.awayTeam.name)}
             </span>
             <span className="text-[10px] text-slate-400 uppercase mt-0.5 tracking-wider font-medium">
-              Puesto #{match.awayTeam.ranking}
+              Puesto #{match.awayTeam.ranking > 85 ? '+85' : match.awayTeam.ranking}
             </span>
           </div>
         </div>

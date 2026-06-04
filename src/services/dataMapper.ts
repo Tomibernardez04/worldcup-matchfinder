@@ -59,7 +59,7 @@ export function mapTeam(name: string, rankingsMap: { [key: string]: number }): T
       name: resolvedName,
       code: 'TBD',
       region: 'Europe', // Default fallback region
-      ranking: 60,      // Standard baseline rank
+      ranking: 100,      // Standard baseline rank
       popularity: 30,   // Baseline popularity
       flag: '🏳️'
     };

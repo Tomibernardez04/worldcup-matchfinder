@@ -35,8 +35,8 @@ export function calculatePopularityScore(homeName: string, awayName: string): nu
  */
 export function calculateRankingScore(homeName: string, awayName: string): number {
   const rankings = localRankings as { [key: string]: number };
-  const rankHome = rankings[homeName] || 60;
-  const rankAway = rankings[awayName] || 60;
+  const rankHome = rankings[homeName] || 100;
+  const rankAway = rankings[awayName] || 100;
   const avgRank = (rankHome + rankAway) / 2;
   
   const score = 100 - (avgRank - 1) * 1.6;

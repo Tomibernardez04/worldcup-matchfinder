@@ -14,7 +14,7 @@ export interface RankingProvider {
 export class LocalJsonRankingProvider implements RankingProvider {
   async getRank(teamName: string): Promise<number> {
     const rankings = localRankings as { [key: string]: number };
-    return rankings[teamName] || 60; // default rank for other teams
+    return rankings[teamName] || 100; // default rank for other teams
   }
 
   async getRankingsMap(): Promise<{ [teamName: string]: number }> {
@@ -53,7 +53,7 @@ export class RankingService {
   }
 
   getDefaultRank(): number {
-    return 60;
+    return 100;
   }
 }
 
