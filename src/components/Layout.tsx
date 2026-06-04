@@ -295,7 +295,7 @@ export const Layout: React.FC<LayoutProps> = ({
         </header>
 
         {/* View Content */}
-        <div className="p-6 md:p-8 flex-1">
+        <div className="pt-4 px-6 pb-6 md:pt-5 md:px-8 md:pb-8 flex-1">
           {children}
         </div>
       </main>

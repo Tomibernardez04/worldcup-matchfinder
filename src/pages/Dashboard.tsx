@@ -39,7 +39,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   // Filter and sort matches by Imperdibility Score
   const scoredMatches = useMemo(() => {
     let list = [...matches];
-    
+
     if (hideWatched) {
       list = list.filter(m => !isWatched(m.id));
     }
@@ -66,7 +66,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     };
 
     // Priority 1: Favorite team match closest in time
-    const favMatches = list.filter(m => 
+    const favMatches = list.filter(m =>
       profile.favoriteTeams.includes(m.homeTeam.name) ||
       profile.favoriteTeams.includes(m.awayTeam.name)
     );
@@ -155,27 +155,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
   }
 
   return (
-    <div className="space-y-10">
-      
+    <div className="space-y-6">
+
       {/* Dashboard Welcome Header */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-start gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-2 m-0">
-            ¡Bienvenido, futbolero! <Sparkles className="w-6 h-6 text-brand-accent animate-pulse" />
+            ¡Bienvenido, futbolero!
           </h1>
-          <p className="text-slate-400 text-xs md:text-sm mt-1">
-            Analizando partidos para vos según tus {profile.favoriteTeams.length} equipos favoritos y {profile.favoriteRegions.length} regiones.
-          </p>
-          {stageFilter === 'groups' && (
-            <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-brand-secondary text-[10px] font-bold tracking-wide uppercase">
-              🏆 Mostrando únicamente partidos de Fase de Grupos
-            </div>
-          )}
-          {stageFilter === 'knockout' && (
-            <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-[10px] font-bold tracking-wide uppercase">
-              🔥 Mostrando únicamente partidos de Eliminación Directa
-            </div>
-          )}
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-start lg:justify-end">
@@ -185,11 +172,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <button
                 key={f}
                 onClick={() => onStageFilterChange(f)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-all cursor-pointer ${
-                  stageFilter === f
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-all cursor-pointer ${stageFilter === f
                     ? 'bg-brand-primary text-bg-dark shadow'
                     : 'text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 {f === 'groups' && '🏆 Fase de Grupos'}
                 {f === 'knockout' && '🔥 Fase Eliminatoria'}
@@ -201,11 +187,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
           {/* Hide Watched toggle */}
           <button
             onClick={() => setHideWatched(!hideWatched)}
-            className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 ${
-              hideWatched
+            className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 ${hideWatched
                 ? 'bg-brand-primary/10 border-brand-primary text-brand-primary'
                 : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
-            }`}
+              }`}
           >
             {hideWatched ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
             <span>{hideWatched ? 'Mostrando no vistos' : 'Ocultar partidos vistos'}</span>
@@ -241,7 +226,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 let heroDateObj: Date | null = null;
                 try {
                   heroDateObj = parseMatchDateTime(heroDateStr, heroTimeStr);
-                } catch (e) {}
+                } catch (e) { }
                 const heroFormattedDate = heroDateObj ? formatMatchDateLong(heroDateObj) : heroDateStr;
                 const heroFormattedTime = heroDateObj ? formatMatchTime(heroDateObj) : heroTimeStr;
 
@@ -250,13 +235,13 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <h3 className="text-xs uppercase font-extrabold tracking-widest text-slate-400 flex items-center gap-2">
                       <Flame className="w-4 h-4 text-red-500" /> Destacado del Mundial
                     </h3>
-                    
+
                     <div className="bg-gradient-to-br from-slate-900 via-bg-card to-slate-950 rounded-3xl border border-brand-primary/25 shadow-2xl overflow-hidden relative group">
                       <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/5 to-transparent pointer-events-none" />
-                      
-                      <div className="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+                      <div className="p-4 sm:p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center">
                         {/* Left: VS Showcase */}
-                        <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-6">
+                        <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-4 lg:space-y-6">
                           <div className="flex flex-wrap gap-2 items-center justify-between w-full">
                             <div className="flex flex-wrap gap-2 items-center">
                               <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-brand-primary/10 border border-brand-primary/30 text-brand-primary uppercase tracking-wider">
@@ -283,11 +268,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                             </span>
                           </div>
 
-                          <div className="flex items-center justify-between gap-2 py-4">
+                          <div className="flex items-center justify-between gap-2 py-2 lg:py-4">
                             {/* Home Team */}
                             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-5/12 text-center md:text-left">
                               <img
-                                src={getFlagUrl(heroMatch.homeTeam.code, 120)}
+                                src={getFlagUrl(heroMatch.homeTeam.code, 40)}
                                 alt={translateTeamName(heroMatch.homeTeam.name)}
                                 className="w-12 h-8 md:w-14 md:h-10 object-cover rounded border border-slate-800 shadow-md shrink-0 select-none mb-1 md:mb-0"
                               />
@@ -308,7 +293,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                                 <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.awayTeam.ranking}</span>
                               </div>
                               <img
-                                src={getFlagUrl(heroMatch.awayTeam.code, 120)}
+                                src={getFlagUrl(heroMatch.awayTeam.code, 40)}
                                 alt={translateTeamName(heroMatch.awayTeam.name)}
                                 className="w-12 h-8 md:w-14 md:h-10 object-cover rounded border border-slate-800 shadow-md shrink-0 select-none mb-1 md:mb-0 order-1 md:order-2"
                               />
@@ -316,17 +301,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
                           </div>
 
                           {/* Venue / Timing */}
-                          <div className="flex flex-wrap gap-4 text-xs text-slate-400 bg-slate-950/40 p-3 rounded-2xl border border-slate-800/40">
-                            <span className="font-semibold">Sede: {heroMatch.venue}</span>
-                            <span className="text-slate-600">|</span>
+                          <div className="grid grid-cols-2 gap-y-2 gap-x-4 sm:flex sm:flex-wrap sm:gap-4 text-[10px] sm:text-xs text-slate-400 bg-slate-950/40 p-3 rounded-2xl border border-slate-800/40">
+                            <span className="font-semibold col-span-2 sm:col-span-1">Sede: {heroMatch.venue}</span>
+                            <span className="hidden sm:inline text-slate-600">|</span>
                             <span>Fecha: {heroFormattedDate}</span>
-                            <span className="text-slate-600">|</span>
+                            <span className="hidden sm:inline text-slate-600">|</span>
                             <span>Hora: {heroFormattedTime}</span>
                           </div>
                         </div>
 
                         {/* Right: Score Breakdown Dial */}
-                        <div className="lg:col-span-5 bg-slate-950/60 rounded-2xl p-6 border border-slate-800/80 flex flex-col justify-between h-full space-y-4">
+                        <div className="lg:col-span-5 bg-slate-950/60 rounded-2xl p-4 sm:p-6 border border-slate-800/80 flex flex-col justify-between h-full space-y-3 sm:space-y-4">
                           <div className="flex justify-between items-center">
                             <div>
                               <h5 className="font-bold text-sm text-slate-200">Índice de Recomendación</h5>
@@ -340,7 +325,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
                           {/* Breakdown progress bars */}
                           {heroMatch.scoreBreakdown && (
-                            <div className="space-y-2.5 pt-2 border-t border-slate-800">
+                            <div className="space-y-1.5 sm:space-y-2.5 pt-2 border-t border-slate-800">
                               {[
                                 { label: 'Fase del Torneo', val: heroMatch.scoreBreakdown.stageScore, color: 'bg-brand-secondary' },
                                 { label: 'Factor de Popularidad', val: heroMatch.scoreBreakdown.popularityScore, color: 'bg-brand-primary' },
@@ -368,22 +353,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
                           <div className="flex gap-3 pt-4 border-t border-slate-800/60 mt-auto">
                             <button
                               onClick={() => onToggleSave(heroMatch.id)}
-                              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                                isSaved(heroMatch.id)
+                              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${isSaved(heroMatch.id)
                                   ? 'bg-brand-accent/20 border-brand-accent text-brand-accent'
                                   : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
-                              }`}
+                                }`}
                             >
                               <span>{isSaved(heroMatch.id) ? 'Guardado' : 'Guardar'}</span>
                             </button>
-                            
+
                             <button
                               onClick={() => onToggleWatched(heroMatch.id)}
-                              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                                isWatched(heroMatch.id)
+                              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${isWatched(heroMatch.id)
                                   ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
                                   : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
-                              }`}
+                                }`}
                             >
                               <span>{isWatched(heroMatch.id) ? 'Visto' : 'Marcar Visto'}</span>
                             </button>
