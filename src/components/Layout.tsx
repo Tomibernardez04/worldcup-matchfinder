@@ -60,10 +60,8 @@ export const Layout: React.FC<LayoutProps> = ({
     };
   });
 
-  const handleNavLinkClick = (to: string) => {
-    if (to !== '/settings') {
-      setIsDrawerOpen(false);
-    }
+  const handleNavLinkClick = (_to?: string) => {
+    setIsDrawerOpen(false);
   };
 
   const renderSidebarContent = () => (
