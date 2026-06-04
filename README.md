@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# My World Cup ⚽
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema de recomendación personalizado para la Copa Mundial FIFA 2026.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+My World Cup es una aplicación web que ayuda a los aficionados a identificar rápidamente los partidos más relevantes del Mundial 2026 según sus intereses personales y disponibilidad horaria.
 
-## React Compiler
+La plataforma utiliza un algoritmo heurístico determinista para generar recomendaciones transparentes y explicables, combinando factores deportivos y preferencias del usuario.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Demo
 
-## Expanding the ESLint configuration
+https://mywc2026.vercel.app
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Funcionalidades
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* Recomendaciones personalizadas de partidos
+* Selección de equipos favoritos
+* Selección de regiones de interés
+* Configuración de disponibilidad horaria
+* Explorador completo de partidos
+* Sistema de favoritos
+* Seguimiento de partidos vistos
+* Explicaciones detalladas de cada recomendación
+* Clasificación automática de encuentros
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tecnologías Utilizadas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* React 19
+* TypeScript
+* Vite
+* Tailwind CSS
+* React Router
+* LocalStorage
+
+## Arquitectura
+
+La aplicación utiliza una arquitectura client-side.
+
+Las preferencias del usuario se almacenan localmente mediante LocalStorage, evitando la necesidad de autenticación y permitiendo una experiencia rápida y simple.
+
+## Algoritmo de Recomendación
+
+### Objective Score
+
+La relevancia deportiva objetiva de un partido se calcula mediante:
+
+Objective Score = 0.55 × Etapa + 0.25 × Popularidad + 0.15 × Ranking FIFA + 0.05 × Rivalidad
+
+### Personal Score
+
+La afinidad del partido con las preferencias del usuario se calcula mediante:
+
+Personal Score = 0.70 × Equipos Favoritos + 0.30 × Regiones Favoritas
+
+### Final Score
+
+La puntuación principal de recomendación se obtiene mediante:
+
+Final Score = 0.60 × Objective Score + 0.40 × Personal Score
+
+### Adjusted Score
+
+La puntuación final se ajusta según la disponibilidad horaria configurada:
+
+Adjusted Score = 0.90 × Final Score + 0.10 × Disponibilidad Horaria
+
+## Instalación
+
+```bash
+git clone <repository-url>
+cd my-world-cup
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Build de Producción
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
 ```
+
+## Autor
+
+Tomás Bernardez
+
+Ingeniería Informática – Universidad Austral
+
+Grupo: Prodev
+
+---
+
+## Proyecto desarrollado para la competencia "Tu Tiempo, Tu Mundial".
