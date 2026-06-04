@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Heart, Globe, AlertOctagon, Save, CheckCircle } from 'lucide-react';
+import { Heart, Globe, AlertOctagon, Save, CheckCircle, Clock } from 'lucide-react';
 import type { UserProfile, Region } from '../types';
 import { SUPPORTED_TEAMS, REGIONS } from '../constants';
 import { translateTeamName, translateRegion } from '../utils/translations';
+import { getFlagUrl } from '../utils/flagUtils';
 
 interface SettingsProps {
   profile: UserProfile;
-  onUpdateFavorites: (teams: string[], regions: Region[]) => void;
+  onUpdateFavorites: (
+    teams: string[],
+    regions: Region[],
+    preferredStartTime?: string,
+    preferredEndTime?: string
+  ) => void;
   onReset: () => void;
 }
 
@@ -18,6 +24,9 @@ export const Settings: React.FC<SettingsProps> = ({
   // Local edit states
   const [selectedTeams, setSelectedTeams] = useState<string[]>([...profile.favoriteTeams]);
   const [selectedRegions, setSelectedRegions] = useState<Region[]>([...profile.favoriteRegions]);
+  const [enableHours, setEnableHours] = useState<boolean>(!!(profile.preferredStartTime && profile.preferredEndTime));
+  const [startTime, setStartTime] = useState<string>(profile.preferredStartTime || '18:00');
+  const [endTime, setEndTime] = useState<string>(profile.preferredEndTime || '23:00');
   
   // UI indicators
   const [showSavedToast, setShowSavedToast] = useState<boolean>(false);
@@ -39,7 +48,12 @@ export const Settings: React.FC<SettingsProps> = ({
   };
 
   const handleSavePreferences = () => {
-    onUpdateFavorites(selectedTeams, selectedRegions);
+    onUpdateFavorites(
+      selectedTeams,
+      selectedRegions,
+      enableHours ? startTime : undefined,
+      enableHours ? endTime : undefined
+    );
     triggerToast();
   };
 
@@ -96,7 +110,11 @@ export const Settings: React.FC<SettingsProps> = ({
                       : 'bg-bg-dark/40 border-slate-800/80 text-slate-400 hover:border-slate-700'
                   }`}
                 >
-                  <span className="text-xl select-none">{team.flag}</span>
+                  <img
+                    src={getFlagUrl(team.code, 40)}
+                    alt={`${team.name} flag`}
+                    className="w-6 h-4.5 object-cover rounded border border-slate-850 shadow-sm shrink-0 select-none"
+                  />
                   <span className="font-bold text-xs truncate text-slate-200">{translateTeamName(team.name)}</span>
                 </button>
               );
@@ -155,7 +173,64 @@ export const Settings: React.FC<SettingsProps> = ({
           </div>
         </div>
 
-        {/* PANEL 3: DANGER ZONE */}
+        {/* PANEL 3: USUAL VIEWING TIMES */}
+        <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 space-y-4">
+          <div className="flex items-center gap-2 pb-3 border-b border-slate-800/60">
+            <Clock className="w-5 h-5 text-brand-primary" />
+            <h3 className="font-extrabold text-base text-slate-100">Horario Habitual para Ver Partidos (Opcional)</h3>
+          </div>
+          <p className="text-xs text-slate-400">
+            Definí el rango horario en el que podés ver partidos cómodamente. Esto ajustará levemente la recomendación y agregará indicadores visuales de disponibilidad sin ocultar partidos.
+          </p>
+
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="enableHours"
+              checked={enableHours}
+              onChange={(e) => setEnableHours(e.target.checked)}
+              className="w-4 h-4 rounded bg-bg-dark border-slate-800 text-brand-primary focus:ring-brand-primary focus:ring-offset-bg-card transition-all cursor-pointer"
+            />
+            <label htmlFor="enableHours" className="font-bold text-xs text-slate-200 cursor-pointer select-none">
+              Habilitar mi horario habitual de visualización
+            </label>
+          </div>
+
+          {enableHours && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md pt-2">
+              <div className="flex flex-col space-y-1">
+                <label className="text-[10px] uppercase tracking-wider font-extrabold text-slate-500">Hora de Inicio</label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="bg-bg-dark border border-slate-800 focus:border-brand-primary rounded-xl px-4 py-2.5 text-xs focus:outline-none text-slate-300 cursor-pointer transition-all"
+                />
+              </div>
+              <div className="flex flex-col space-y-1">
+                <label className="text-[10px] uppercase tracking-wider font-extrabold text-slate-500">Hora de Fin</label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="bg-bg-dark border border-slate-800 focus:border-brand-primary rounded-xl px-4 py-2.5 text-xs focus:outline-none text-slate-300 cursor-pointer transition-all"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={handleSavePreferences}
+              className="flex items-center gap-2 py-2.5 px-5 bg-brand-primary text-bg-dark rounded-xl font-bold transition-all hover:scale-102 cursor-pointer shadow-md text-xs"
+            >
+              <Save className="w-4 h-4" />
+              <span>Guardar Horarios</span>
+            </button>
+          </div>
+        </div>
+
+        {/* PANEL 4: DANGER ZONE */}
         <div className="bg-slate-900/40 border border-red-500/20 rounded-2xl p-6 space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-red-500/10">
             <AlertOctagon className="w-5 h-5 text-red-500" />

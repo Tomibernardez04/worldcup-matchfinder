@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Flame, Sparkles, AlertTriangle, RefreshCw, EyeOff, Eye, Info } from 'lucide-react';
-import type { Match, UserProfile } from '../types';
+import type { Match, UserProfile, StageFilter } from '../types';
 import MatchCard from '../components/MatchCard';
 import SkeletonLoader from '../components/SkeletonLoader';
 import { parseMatchDateTime, formatMatchDateLong, formatMatchTime } from '../utils/dateUtils';
 import { translateTeamName, translateStage, translateGroup } from '../utils/translations';
+import { getFlagUrl } from '../utils/flagUtils';
 
 interface DashboardProps {
   matches: Match[];
@@ -16,6 +17,8 @@ interface DashboardProps {
   onToggleSave: (id: string) => void;
   onToggleWatched: (id: string) => void;
   onRetry: () => void;
+  stageFilter: StageFilter;
+  onStageFilterChange: (filter: StageFilter) => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
@@ -27,7 +30,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
   isWatched,
   onToggleSave,
   onToggleWatched,
-  onRetry
+  onRetry,
+  stageFilter,
+  onStageFilterChange
 }) => {
   const [hideWatched, setHideWatched] = useState<boolean>(false);
 
@@ -153,7 +158,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     <div className="space-y-10">
       
       {/* Dashboard Welcome Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-2 m-0">
             ¡Bienvenido, futbolero! <Sparkles className="w-6 h-6 text-brand-accent animate-pulse" />
@@ -161,20 +166,51 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <p className="text-slate-400 text-xs md:text-sm mt-1">
             Analizando partidos para vos según tus {profile.favoriteTeams.length} equipos favoritos y {profile.favoriteRegions.length} regiones.
           </p>
+          {stageFilter === 'groups' && (
+            <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded bg-brand-secondary/10 border border-brand-secondary/20 text-brand-secondary text-[10px] font-bold tracking-wide uppercase">
+              🏆 Mostrando únicamente partidos de Fase de Grupos
+            </div>
+          )}
+          {stageFilter === 'knockout' && (
+            <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-[10px] font-bold tracking-wide uppercase">
+              🔥 Mostrando únicamente partidos de Eliminación Directa
+            </div>
+          )}
         </div>
 
-        {/* Hide Watched toggle */}
-        <button
-          onClick={() => setHideWatched(!hideWatched)}
-          className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-            hideWatched
-              ? 'bg-brand-primary/10 border-brand-primary text-brand-primary'
-              : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
-          }`}
-        >
-          {hideWatched ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-          <span>{hideWatched ? 'Mostrando no vistos' : 'Ocultar partidos vistos'}</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-start lg:justify-end">
+          {/* Stage Filter Button Group */}
+          <div className="flex items-center bg-slate-900/60 p-1 rounded-xl border border-slate-800 shrink-0">
+            {(['groups', 'knockout', 'all'] as StageFilter[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => onStageFilterChange(f)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-all cursor-pointer ${
+                  stageFilter === f
+                    ? 'bg-brand-primary text-bg-dark shadow'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {f === 'groups' && '🏆 Fase de Grupos'}
+                {f === 'knockout' && '🔥 Fase Eliminatoria'}
+                {f === 'all' && '🌍 Todo el Torneo'}
+              </button>
+            ))}
+          </div>
+
+          {/* Hide Watched toggle */}
+          <button
+            onClick={() => setHideWatched(!hideWatched)}
+            className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 ${
+              hideWatched
+                ? 'bg-brand-primary/10 border-brand-primary text-brand-primary'
+                : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+            }`}
+          >
+            {hideWatched ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+            <span>{hideWatched ? 'Mostrando no vistos' : 'Ocultar partidos vistos'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Loading State */}
@@ -221,38 +257,61 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       <div className="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                         {/* Left: VS Showcase */}
                         <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-6">
-                          <div className="flex justify-between items-center">
-                            <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-brand-primary/10 border border-brand-primary/30 text-brand-primary uppercase tracking-wider">
-                              🔥 Imperdible
-                            </span>
+                          <div className="flex flex-wrap gap-2 items-center justify-between w-full">
+                            <div className="flex flex-wrap gap-2 items-center">
+                              <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-brand-primary/10 border border-brand-primary/30 text-brand-primary uppercase tracking-wider">
+                                🔥 Imperdible
+                              </span>
+                              {heroMatch.availabilityBadge === 'Ideal' && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                  🟢 Horario Ideal
+                                </span>
+                              )}
+                              {heroMatch.availabilityBadge === 'Aceptable' && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                                  🟡 Horario Aceptable
+                                </span>
+                              )}
+                              {heroMatch.availabilityBadge === 'Complicado' && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold bg-rose-500/10 border border-rose-500/30 text-rose-400">
+                                  🔴 Horario Complicado
+                                </span>
+                              )}
+                            </div>
                             <span className="text-xs text-slate-400 font-semibold bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
                               {translateStage(heroMatch.stage)} {heroMatch.group && ` - ${translateGroup(heroMatch.group)}`}
                             </span>
                           </div>
 
-                          <div className="flex items-center justify-between gap-4 py-4">
-                            <div className="flex items-center gap-3 md:gap-5 w-5/12">
-                              <span className="text-4xl md:text-5xl select-none" role="img" aria-label={translateTeamName(heroMatch.homeTeam.name)}>
-                                {heroMatch.homeTeam.flag}
-                              </span>
-                              <div className="min-w-0">
-                                <h4 className="text-lg md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.homeTeam.name)}</h4>
-                                <span className="text-xs text-slate-400 font-semibold">Puesto FIFA #{heroMatch.homeTeam.ranking}</span>
+                          <div className="flex items-center justify-between gap-2 py-4">
+                            {/* Home Team */}
+                            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-5/12 text-center md:text-left">
+                              <img
+                                src={getFlagUrl(heroMatch.homeTeam.code, 120)}
+                                alt={translateTeamName(heroMatch.homeTeam.name)}
+                                className="w-12 h-8 md:w-14 md:h-10 object-cover rounded border border-slate-800 shadow-md shrink-0 select-none mb-1 md:mb-0"
+                              />
+                              <div className="min-w-0 w-full">
+                                <h4 className="text-sm md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.homeTeam.name)}</h4>
+                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.homeTeam.ranking}</span>
                               </div>
                             </div>
 
-                            <div className="flex flex-col items-center justify-center w-2/12">
+                            <div className="flex flex-col items-center justify-center w-2/12 shrink-0">
                               <span className="text-xs font-extrabold text-brand-secondary/80 bg-brand-secondary/5 border border-brand-secondary/20 px-3 py-1 rounded">VS</span>
                             </div>
 
-                            <div className="flex items-center gap-3 md:gap-5 w-5/12 justify-end text-right">
-                              <div className="min-w-0">
-                                <h4 className="text-lg md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.awayTeam.name)}</h4>
-                                <span className="text-xs text-slate-400 font-semibold">Puesto FIFA #{heroMatch.awayTeam.ranking}</span>
+                            {/* Away Team */}
+                            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-5/12 justify-end text-center md:text-right">
+                              <div className="min-w-0 w-full order-2 md:order-1">
+                                <h4 className="text-sm md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.awayTeam.name)}</h4>
+                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.awayTeam.ranking}</span>
                               </div>
-                              <span className="text-4xl md:text-5xl select-none" role="img" aria-label={translateTeamName(heroMatch.awayTeam.name)}>
-                                {heroMatch.awayTeam.flag}
-                              </span>
+                              <img
+                                src={getFlagUrl(heroMatch.awayTeam.code, 120)}
+                                alt={translateTeamName(heroMatch.awayTeam.name)}
+                                className="w-12 h-8 md:w-14 md:h-10 object-cover rounded border border-slate-800 shadow-md shrink-0 select-none mb-1 md:mb-0 order-1 md:order-2"
+                              />
                             </div>
                           </div>
 
@@ -288,6 +347,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
                                 { label: 'Rankings FIFA', val: heroMatch.scoreBreakdown.rankingScore, color: 'bg-purple-500' },
                                 { label: 'Rivalidad Histórica', val: heroMatch.scoreBreakdown.rivalryScore, color: 'bg-red-500' },
                                 { label: 'Preferencia de Usuario', val: heroMatch.scoreBreakdown.userPreferenceScore, color: 'bg-brand-accent' },
+                                ...(heroMatch.scoreBreakdown.availabilityScore !== undefined
+                                  ? [{ label: 'Disponibilidad Horaria', val: heroMatch.scoreBreakdown.availabilityScore, color: 'bg-emerald-500' }]
+                                  : [])
                               ].map((item, idx) => (
                                 <div key={idx} className="space-y-1">
                                   <div className="flex justify-between text-[10px] font-bold text-slate-400">

@@ -3,6 +3,7 @@ import { getTeamPopularity } from '../data/teamPopularity';
 import { getRivalry } from '../data/rivalries';
 import localRankings from '../data/rankings.json';
 import { translateTeamName, translateStage, translateRegion } from '../utils/translations';
+import { parseMatchDateTime, getArgentineTimeParts } from '../utils/dateUtils';
 
 /**
  * Calculates raw Stage Score (0-100)
@@ -72,13 +73,15 @@ export function generateExplanations(
   const awayFav = profile.favoriteTeams.includes(match.awayTeam.name);
   const homeTranslated = translateTeamName(match.homeTeam.name);
   const awayTranslated = translateTeamName(match.awayTeam.name);
+  const homeFlag = match.homeTeam.flag;
+  const awayFlag = match.awayTeam.flag;
   
   if (homeFav && awayFav) {
-    explanations.push(`⭐ ¡Partidazo! Seguís tanto a ${homeTranslated} como a ${awayTranslated}.`);
+    explanations.push(`⭐ ¡Partidazo! Seguís tanto a ${homeFlag} ${homeTranslated} como a ${awayFlag} ${awayTranslated}.`);
   } else if (homeFav) {
-    explanations.push(`⭐ Seguís a ${homeTranslated}.`);
+    explanations.push(`⭐ Seguís a ${homeFlag} ${homeTranslated}.`);
   } else if (awayFav) {
-    explanations.push(`⭐ Seguís a ${awayTranslated}.`);
+    explanations.push(`⭐ Seguís a ${awayFlag} ${awayTranslated}.`);
   }
   
   const homeRegionFav = profile.favoriteRegions.includes(match.homeTeam.region);
@@ -120,6 +123,7 @@ export const recommendationEngine = {
     category: 'Must Watch' | 'Worth Watching' | 'Watch Highlights';
     breakdown: MatchScoreBreakdown;
     explanations: string[];
+    availabilityBadge?: 'Ideal' | 'Aceptable' | 'Complicado';
   } {
     const stageScore = calculateStageScore(match.stage);
     const popularityScore = calculatePopularityScore(match.homeTeam.name, match.awayTeam.name);
@@ -168,34 +172,115 @@ export const recommendationEngine = {
       }
     }
 
-    const breakdown: MatchScoreBreakdown = {
+    // 5. User Time Availability Adjustment
+    let availabilityScore: number | undefined = undefined;
+    let availabilityBadge: Match['availabilityBadge'] = undefined;
+    let adjustedScore = finalScore;
+
+    const explanations = generateExplanations(match, {
       stageScore,
       popularityScore,
       rankingScore,
       rivalryScore,
       userPreferenceScore: personalScore,
       total: finalScore
-    };
+    }, profile);
 
-    const explanations = generateExplanations(match, breakdown, profile);
+    if (profile.preferredStartTime && profile.preferredEndTime) {
+      let matchHour = 12;
+      let matchMinute = 0;
+      try {
+        const dateObj = parseMatchDateTime(match.date, match.time);
+        const parts = getArgentineTimeParts(dateObj);
+        matchHour = parts.hour;
+        matchMinute = parts.minute;
+      } catch {
+        const timeClean = match.time.split(' ')[0];
+        const [h, m] = timeClean.split(':').map(Number);
+        if (!isNaN(h)) matchHour = h;
+        if (!isNaN(m)) matchMinute = m;
+      }
+
+      const [startHour, startMin] = profile.preferredStartTime.split(':').map(Number);
+      const [endHour, endMin] = profile.preferredEndTime.split(':').map(Number);
+      const timeStart = startHour + startMin / 60;
+      const timeEnd = endHour + endMin / 60;
+      const timeMatch = matchHour + matchMinute / 60;
+
+      // Check madrugada extrema: Entre 01:00 y 05:00
+      const isMadrugada = timeMatch >= 1.0 && timeMatch <= 5.0;
+
+      if (isMadrugada) {
+        availabilityScore = 0;
+        availabilityBadge = 'Complicado';
+        explanations.push('🌙 Partido de madrugada. Quizás prefieras ver el resumen.');
+      } else {
+        // Check within range
+        let inRange = false;
+        if (timeStart <= timeEnd) {
+          inRange = timeMatch >= timeStart && timeMatch <= timeEnd;
+        } else {
+          inRange = timeMatch >= timeStart || timeMatch <= timeEnd;
+        }
+
+        if (inRange) {
+          availabilityScore = 100;
+          availabilityBadge = 'Ideal';
+          explanations.push('🕒 Se juega dentro de tu horario habitual para ver fútbol.');
+        } else {
+          // Check within 2 hours
+          const timeStartExpanded = (timeStart - 2 + 24) % 24;
+          const timeEndExpanded = (timeEnd + 2) % 24;
+          
+          let inExpandedRange = false;
+          if (timeStartExpanded <= timeEndExpanded) {
+            inExpandedRange = timeMatch >= timeStartExpanded && timeMatch <= timeEndExpanded;
+          } else {
+            inExpandedRange = timeMatch >= timeStartExpanded || timeMatch <= timeEndExpanded;
+          }
+
+          if (inExpandedRange) {
+            availabilityScore = 70;
+            availabilityBadge = 'Aceptable';
+            explanations.push('🕒 Se juega cerca de tu horario habitual.');
+          } else {
+            availabilityScore = 30;
+            availabilityBadge = 'Complicado';
+            explanations.push('⚠️ Se juega fuera de tu horario habitual.');
+          }
+        }
+      }
+
+      adjustedScore = Math.max(0, Math.min(100, Math.round(finalScore * 0.90 + availabilityScore * 0.10)));
+    }
 
     return {
-      score: finalScore,
+      score: adjustedScore,
       category,
-      breakdown,
-      explanations
+      breakdown: {
+        stageScore,
+        popularityScore,
+        rankingScore,
+        rivalryScore,
+        userPreferenceScore: personalScore,
+        availabilityScore,
+        total: adjustedScore
+      },
+      explanations,
+      availabilityBadge
     };
   },
 
   recommendMatches(matches: Match[], profile: UserProfile): Match[] {
     return matches.map(match => {
-      const { score, category, breakdown, explanations } = this.scoreMatch(match, profile);
+      const { score, category, breakdown, explanations, availabilityBadge } = this.scoreMatch(match, profile);
       return {
         ...match,
         imperdibilityScore: score,
         category,
         scoreBreakdown: breakdown,
-        recommendationExplanation: explanations
+        recommendationExplanation: explanations,
+        availabilityBadge
       };
     });
   }

@@ -69,3 +69,20 @@ export function getMatchTimestamp(m: Match): number {
     return Number.MAX_SAFE_INTEGER;
   }
 }
+
+/**
+ * Returns the hour and minute of a date formatted in Argentine timezone.
+ */
+export function getArgentineTimeParts(date: Date): { hour: number; minute: number } {
+  const tFormatter = new Intl.DateTimeFormat('es-AR', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  const formatted = tFormatter.format(date); // "HH:MM"
+  const clean = formatted.replace(/[^\d:]/g, ''); // keep only digits and colon
+  const [h, m] = clean.split(':').map(Number);
+  return { hour: h, minute: m };
+}
+

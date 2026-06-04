@@ -3,6 +3,7 @@ import { Bookmark, Check, Calendar, Clock, MapPin, Sparkles, Trophy } from 'luci
 import type { Match } from '../types';
 import { parseMatchDateTime, formatMatchDate, formatMatchTime } from '../utils/dateUtils';
 import { translateTeamName, translateStage, translateGroup } from '../utils/translations';
+import { getFlagUrl } from '../utils/flagUtils';
 
 interface MatchCardProps {
   match: Match;
@@ -59,6 +60,21 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               A confirmar
             </span>
           )}
+          {match.availabilityBadge === 'Ideal' && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+              🟢 Horario Ideal
+            </span>
+          )}
+          {match.availabilityBadge === 'Aceptable' && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold bg-amber-500/10 border border-amber-500/30 text-amber-400">
+              🟡 Horario Aceptable
+            </span>
+          )}
+          {match.availabilityBadge === 'Complicado' && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold bg-rose-500/10 border border-rose-500/30 text-rose-400">
+              🔴 Horario Complicado
+            </span>
+          )}
         </div>
         
         <div className={`flex flex-col items-center justify-center border w-12 h-12 rounded-full font-bold text-sm tracking-tighter ${scoreColorClass}`}>
@@ -72,9 +88,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         <div className="w-full flex items-center justify-between gap-2 my-2">
           {/* Home Team */}
           <div className="flex flex-col items-center text-center w-5/12">
-            <span className="text-4xl mb-2 drop-shadow-sm select-none" role="img" aria-label={translateTeamName(match.homeTeam.name)}>
-              {match.homeTeam.flag}
-            </span>
+            <img
+              src={getFlagUrl(match.homeTeam.code, 80)}
+              alt={translateTeamName(match.homeTeam.name)}
+              className="w-12 h-8 md:w-14 md:h-9 object-cover rounded border border-slate-800 shadow-sm mb-2 select-none"
+            />
             <span className="font-bold text-slate-100 text-sm md:text-base truncate w-full">
               {translateTeamName(match.homeTeam.name)}
             </span>
@@ -102,9 +120,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 
           {/* Away Team */}
           <div className="flex flex-col items-center text-center w-5/12">
-            <span className="text-4xl mb-2 drop-shadow-sm select-none" role="img" aria-label={translateTeamName(match.awayTeam.name)}>
-              {match.awayTeam.flag}
-            </span>
+            <img
+              src={getFlagUrl(match.awayTeam.code, 80)}
+              alt={translateTeamName(match.awayTeam.name)}
+              className="w-12 h-8 md:w-14 md:h-9 object-cover rounded border border-slate-800 shadow-sm mb-2 select-none"
+            />
             <span className="font-bold text-slate-100 text-sm md:text-base truncate w-full">
               {translateTeamName(match.awayTeam.name)}
             </span>

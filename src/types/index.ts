@@ -30,6 +30,7 @@ export interface MatchScoreBreakdown {
   rankingScore: number;
   rivalryScore: number;
   userPreferenceScore: number;
+  availabilityScore?: number;
   total: number;
 }
 
@@ -55,12 +56,15 @@ export interface Match {
   imperdibilityScore?: number;
   scoreBreakdown?: MatchScoreBreakdown;
   recommendationExplanation?: string[];
+  availabilityBadge?: 'Ideal' | 'Aceptable' | 'Complicado';
 }
 
 export interface UserProfile {
   favoriteTeams: string[];
   favoriteRegions: Region[];
   setupComplete: boolean;
+  preferredStartTime?: string;
+  preferredEndTime?: string;
 }
 
 export interface RankingData {
@@ -72,3 +76,5 @@ export interface Rivalry {
   description: string;
   bonus: number;
 }
+
+export type StageFilter = 'all' | 'groups' | 'knockout';

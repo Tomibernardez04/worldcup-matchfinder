@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import useUserProfile from './hooks/useUserProfile';
 import useMatches from './hooks/useMatches';
@@ -9,6 +10,7 @@ import MatchExplorer from './pages/MatchExplorer';
 import SavedMatches from './pages/SavedMatches';
 import WatchedMatches from './pages/WatchedMatches';
 import Settings from './pages/Settings';
+import type { StageFilter } from './types';
 
 export function App() {
   const { profile, updateFavorites, resetProfile } = useUserProfile();
@@ -30,6 +32,27 @@ export function App() {
   // Compute recommendation ratings and sorting
   const recommendedMatches = useRecommendations(matches, profile);
 
+  // Global Stage Filter State
+  const [stageFilter, setStageFilter] = useState<StageFilter>(() => {
+    return (localStorage.getItem('wc2026_stage_filter') as StageFilter) || 'groups';
+  });
+
+  const handleSetStageFilter = (filter: StageFilter) => {
+    setStageFilter(filter);
+    localStorage.setItem('wc2026_stage_filter', filter);
+  };
+
+  // Filter matches globally before rendering any views
+  const filteredMatches = useMemo(() => {
+    if (stageFilter === 'groups') {
+      return recommendedMatches.filter(m => m.stage === 'Group Stage');
+    }
+    if (stageFilter === 'knockout') {
+      return recommendedMatches.filter(m => m.stage !== 'Group Stage');
+    }
+    return recommendedMatches;
+  }, [recommendedMatches, stageFilter]);
+
   // Enforce Onboarding flow if profile setup is not complete
   if (!profile.setupComplete) {
     return (
@@ -40,7 +63,7 @@ export function App() {
             element={
               <Onboarding 
                 onComplete={(p) => {
-                  updateFavorites(p.favoriteTeams, p.favoriteRegions);
+                  updateFavorites(p.favoriteTeams, p.favoriteRegions, p.preferredStartTime, p.preferredEndTime);
                 }} 
               />
             } 
@@ -54,7 +77,6 @@ export function App() {
     <HashRouter>
       <Layout
         profile={profile}
-        resetProfile={resetProfile}
         savedCount={savedMatchIds.length}
         watchedCount={watchedMatchIds.length}
       >
@@ -63,7 +85,7 @@ export function App() {
             path="/"
             element={
               <Dashboard
-                matches={recommendedMatches}
+                matches={filteredMatches}
                 isLoading={isLoading}
                 error={error}
                 profile={profile}
@@ -72,6 +94,8 @@ export function App() {
                 onToggleSave={toggleSave}
                 onToggleWatched={toggleWatched}
                 onRetry={refresh}
+                stageFilter={stageFilter}
+                onStageFilterChange={handleSetStageFilter}
               />
             }
           />
@@ -79,7 +103,7 @@ export function App() {
             path="/explorer"
             element={
               <MatchExplorer
-                matches={recommendedMatches}
+                matches={filteredMatches}
                 isLoading={isLoading}
                 isSaved={isSaved}
                 isWatched={isWatched}
@@ -92,7 +116,7 @@ export function App() {
             path="/saved"
             element={
               <SavedMatches
-                matches={recommendedMatches}
+                matches={filteredMatches}
                 isLoading={isLoading}
                 isSaved={isSaved}
                 isWatched={isWatched}
@@ -105,7 +129,7 @@ export function App() {
             path="/watched"
             element={
               <WatchedMatches
-                matches={recommendedMatches}
+                matches={filteredMatches}
                 isLoading={isLoading}
                 isSaved={isSaved}
                 isWatched={isWatched}

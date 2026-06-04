@@ -10,12 +10,19 @@ export function useUserProfile() {
     setProfileState(updatedProfile);
   }, []);
 
-  const updateFavorites = useCallback((favoriteTeams: string[], favoriteRegions: Region[]) => {
+  const updateFavorites = useCallback((
+    favoriteTeams: string[],
+    favoriteRegions: Region[],
+    preferredStartTime?: string,
+    preferredEndTime?: string
+  ) => {
     setProfileState((prev) => {
       const updated = {
         ...prev,
         favoriteTeams,
         favoriteRegions,
+        preferredStartTime,
+        preferredEndTime,
         setupComplete: true
       };
       storageService.saveUserProfile(updated);

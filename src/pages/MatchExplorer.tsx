@@ -3,7 +3,7 @@ import { Search, ArrowUpDown, RefreshCw, HelpCircle } from 'lucide-react';
 import type { Match } from '../types';
 import MatchCard from '../components/MatchCard';
 import SkeletonLoader from '../components/SkeletonLoader';
-import { COMPETITION_STAGES } from '../constants';
+import { COMPETITION_STAGES, SUPPORTED_TEAMS } from '../constants';
 import { translateTeamName, translateStage, translateGroup } from '../utils/translations';
 
 interface MatchExplorerProps {
@@ -202,9 +202,15 @@ export const MatchExplorer: React.FC<MatchExplorerProps> = ({
               className="bg-bg-dark border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-slate-300 cursor-pointer"
             >
               <option value="">Todos los países</option>
-              {allMatchTeams.map(name => (
-                <option key={name} value={name}>{translateTeamName(name)}</option>
-              ))}
+              {allMatchTeams.map(name => {
+                const team = SUPPORTED_TEAMS.find(t => t.name === name);
+                const flag = team ? team.flag : '⚽';
+                return (
+                  <option key={name} value={name}>
+                    {flag} {translateTeamName(name)}
+                  </option>
+                );
+              })}
             </select>
           </div>
 

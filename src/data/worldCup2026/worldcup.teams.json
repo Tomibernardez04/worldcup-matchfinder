@@ -406,7 +406,7 @@
     {
         "name": "England",
         "continent": "Europe",
-        "flag_icon": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+        "flag_icon": "ENG",
         "flag_unicode": "\\u{1F3F4}\\u{E0067}\\u{E0062}\\u{E0065}\\u{E006E}\\u{E0067}\\u{E007F}",
         "fifa_code": "ENG",
         "group": "L",
