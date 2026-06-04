@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe Metodológico - My World Cup</title>
+  
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX CDN for rendering equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    /* Baseline Variables & Theme Colors */
+    :root {
+      --primary: #0a192f;
+      --secondary: #1e3a8a;
+      --accent: #d97706;
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --bg-slate: #f8fafc;
+      --border-color: #e2e8f0;
+      --emerald-accent: #059669;
+      --rose-accent: #dc2626;
+    }
+
+    /* Reset and Layout styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text-dark);
+      background-color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 11pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Print utility controls */
+    .print-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .print-header h1 {
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .print-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s ease;
+    }
+
+    .print-btn:hover {
+      background: #b45309;
+    }
+
+    /* Page container layout mimicking A4 pages on screen */
+    .page-container {
+      max-width: 210mm;
+      margin: 2rem auto;
+    }
+
+    .page {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      padding: 2.5cm 2cm 2cm 2cm;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    .page-content {
+      flex-grow: 1;
+    }
+
+    /* Academic Header & Footer */
+    .running-header {
+      position: absolute;
+      top: 1cm;
+      left: 2cm;
+      right: 2cm;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.3rem;
+      font-size: 8pt;
+      color: var(--text-light);
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .running-footer {
+      position: absolute;
+      bottom: 1cm;
+      left: 2cm;
+      right: 2cm;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.3rem;
+      font-size: 8pt;
+      color: var(--text-light);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Styling Elements */
+    .title-large {
+      font-size: 38pt;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .subtitle-large {
+      font-size: 16pt;
+      color: var(--secondary);
+      margin-bottom: 3rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .divider {
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, var(--emerald-accent) 100%);
+      margin-bottom: 2rem;
+    }
+
+    h2.section-title {
+      font-size: 20pt;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    h3.subsection-title {
+      font-size: 14pt;
+      color: var(--secondary);
+      margin-top: 1.2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+      color: #334155;
+    }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      margin-left: 1.5rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    /* Math block alignment */
+    .math-block {
+      background: var(--bg-slate);
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid var(--secondary);
+      margin: 1.2rem 0;
+      overflow-x: auto;
+    }
+
+    /* Custom Tables */
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 9.5pt;
+    }
+
+    table.custom-table th, table.custom-table td {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    table.custom-table th {
+      background-color: var(--primary);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+    }
+
+    table.custom-table tr:nth-child(even) {
+      background-color: var(--bg-slate);
+    }
+
+    /* Callout & Alerts boxes */
+    .callout-box {
+      background-color: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      font-size: 10pt;
+    }
+
+    .callout-box-title {
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 0.3rem;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Table of contents dots list */
+    .toc-list {
+      list-style: none;
+      margin: 2rem 0;
+    }
+
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 0.8rem;
+    }
+
+    .toc-name {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .toc-dots {
+      flex-grow: 1;
+      border-bottom: 1px dotted var(--text-light);
+      margin: 0 0.5rem;
+      position: relative;
+      top: -4px;
+    }
+
+    .toc-page {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Diagrams, Flex Cards & SVG Flows */
+    .diagram-container {
+      background-color: var(--bg-slate);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .diagram-title {
+      font-size: 9pt;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-light);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Highlight boxes for metrics */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .metric-card {
+      background: var(--bg-slate);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 22pt;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .metric-lbl {
+      font-size: 8pt;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* Screenshot Images Container */
+    .screenshot-container {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      background: #000;
+    }
+
+    .screenshot-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+      opacity: 0.95;
+    }
+
+    .screenshot-caption {
+      background: var(--primary);
+      color: white;
+      font-size: 8.5pt;
+      padding: 0.6rem 1rem;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Print Specific Media Styles */
+    @media print {
+      body {
+        background-color: white;
+        font-size: 11pt;
+      }
+
+      .print-header {
+        display: none !important;
+      }
+
+      .page-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .page {
+        box-shadow: none;
+        margin: 0;
+        padding: 2.5cm 2cm 2cm 2cm;
+        border-radius: 0;
+        page-break-after: always;
+        min-height: 100%;
+        height: auto;
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Header Toolbar (Hidden in print) -->
+  <div class="print-header">
+    <div>
+      <h1>My World Cup — Informe Metodológico</h1>
+      <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 0;">Presiona el botón de la derecha para generar tu PDF listo para imprimir</p>
+    </div>
+    <button class="print-btn" onclick="window.print()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Imprimir / Guardar PDF
+    </button>
+  </div>
+
+  <div class="page-container">
+
+    <!-- PAGE 1: PORTADA -->
+    <div class="page" id="page-1">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>Universidad Austral</span>
+      </div>
+
+      <div class="page-content" style="display: flex; flex-direction: column; justify-content: center; height: 100%; margin-top: 2rem;">
+        <!-- Logo SVG -->
+        <div style="margin-bottom: 3rem;">
+          <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" stroke="#0a192f" stroke-width="6" fill="#f8fafc"/>
+            <path d="M50 5A45 45 0 0 1 95 50" stroke="#d97706" stroke-width="6"/>
+            <!-- Clock Hands -->
+            <line x1="50" y1="50" x2="50" y2="25" stroke="#0a192f" stroke-width="5" stroke-linecap="round"/>
+            <line x1="50" y1="50" x2="70" y2="50" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+            <!-- Soccer Pentagon Center -->
+            <polygon points="50,42 57,48 55,56 45,56 43,48" fill="#0a192f"/>
+            <!-- Lines to outer edge -->
+            <line x1="50" y1="42" x2="50" y2="30" stroke="#0a192f" stroke-width="2"/>
+            <line x1="57" y1="48" x2="68" y2="45" stroke="#0a192f" stroke-width="2"/>
+            <line x1="55" y1="56" x2="62" y2="67" stroke="#0a192f" stroke-width="2"/>
+            <line x1="45" y1="56" x2="38" y2="67" stroke="#0a192f" stroke-width="2"/>
+            <line x1="43" y1="48" x2="32" y2="45" stroke="#0a192f" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="divider"></div>
+        <h1 class="title-large">MY WORLD CUP</h1>
+        <h2 class="subtitle-large">Sistema Personalizado de Recomendación de Partidos y Optimización de Agenda para la Copa Mundial de la FIFA 2026™</h2>
+        
+        <div style="margin-top: auto; margin-bottom: 2rem;">
+          <table style="border: none; font-size: 10pt; line-height: 1.8; color: var(--text-dark);">
+            <tr>
+              <td style="padding-right: 1.5rem; font-weight: 700; color: var(--primary);">Documento:</td>
+              <td>Informe Metodológico y Técnico de Ingeniería</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--primary);">Destinatario:</td>
+              <td>Jurado Evaluador de la Competencia "Tu tiempo, tu Mundial"</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--primary);">Institución:</td>
+              <td>Universidad Austral – Facultad de Ingeniería, Sede Pilar</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--primary);">Autor:</td>
+              <td>Tomás Bernardez</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: var(--primary);">Fecha:</td>
+              <td>Junio de 2026</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 1</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 2: ÍNDICE Y RESUMEN EJECUTIVO -->
+    <div class="page" id="page-2">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">Índice del Informe</h2>
+        
+        <ul class="toc-list">
+          <li class="toc-item">
+            <span class="toc-name">1. Portada</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">1</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">2. Resumen Ejecutivo</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">2</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">3. Problema a Resolver</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">3</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">4. Solución Propuesta</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">4</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">5. Metodología de Desarrollo</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">4</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">6. Motor de Recomendación: Algoritmos y Fórmulas Matemáticas</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">5</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">7. Experiencia de Usuario (UX) y Decisiones de Interfaz</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">7</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">8. Tecnologías Utilizadas</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">8</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">9. Casos de Uso y Resultados Comparativos</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">8</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">10. Conclusiones</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">9</span>
+          </li>
+          <li class="toc-item">
+            <span class="toc-name">11. Trabajo Futuro</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">9</span>
+          </li>
+        </ul>
+
+        <h2 class="section-title">2. Resumen Ejecutivo</h2>
+        <p>
+          El presente informe expone de manera exhaustiva el diseño conceptual, la fundamentación matemática y la arquitectura de software de la plataforma web <strong>My World Cup</strong>. Este sistema surge como respuesta directa al desafío planteado en la competencia "Tu tiempo, tu Mundial" de la Universidad Austral: optimizar el consumo de contenidos deportivos en un escenario inédito de fragmentación y volumen de información.
+        </p>
+        <p>
+          Con la ampliación de la Copa Mundial de la FIFA 2026™ a <strong>48 selecciones clasificadas</strong> y un total de <strong>104 encuentros programados</strong> en tres países co-anfitriones, los usuarios se enfrentan a un fenómeno agudo de sobrecarga cognitiva. Esto se ve agravado por los diversos husos horarios de Norteamérica, lo que resulta en horarios de transmisión en Argentina que colisionan con la jornada laboral y de estudio, o se sitúan en altas horas de la madrugada.
+        </p>
+        <p>
+          <strong>My World Cup</strong> resuelve esta problemática mediante un motor de recomendación híbrido que evalúa variables de atracción deportiva objetiva (como la instancia del torneo, el ranking oficial de la FIFA, rivalidades de trascendencia histórica y métricas de popularidad global) conjuntamente con el perfil del usuario (selecciones de preferencia, confederaciones de interés y disponibilidad horaria en tiempo local de Argentina). Mediante una categorización en tres niveles ("Imperdibles", "Recomendados" y "Resumen") y un diseño responsive premium desarrollado en el cliente con React 19 y TailwindCSS v4, la plataforma democratiza el acceso a una grilla personalizada, fluida y con privacidad absoluta de datos.
+        </p>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 2</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 3: PROBLEMA A RESOLVER -->
+    <div class="page" id="page-3">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">3. Problema a Resolver</h2>
+        <p>
+          La expansión del formato de competencia en el Mundial de 2026 introduce complejidades sin precedentes para el aficionado promedio y el analista de datos. Se identifican tres pilares de fricción que impiden una óptima experiencia de visualización:
+        </p>
+        
+        <h3 class="subsection-title">A. La Escala de los 104 Partidos (Sobrecarga Cognitiva)</h3>
+        <p>
+          El incremento de 64 partidos (Qatar 2022) a <strong>104 partidos</strong> (Canadá, Estados Unidos y México 2026) representa una variación del <strong>+62.5%</strong> en volumen de eventos. Un espectador que desee ver todos los partidos debería invertir más de 156 horas de atención (excluyendo tiempos extra o transmisiones previas), lo cual resulta incompatible con la vida cotidiana y académica de los universitarios. Esto causa fatiga informativa, dificultando la selección de los partidos que verdaderamente ofrecen alto espectáculo deportivo.
+        </p>
+
+        <!-- Metric Cards Comparison -->
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-val">64</div>
+            <div class="metric-lbl">Partidos en 2022</div>
+          </div>
+          <div class="metric-card" style="border-color: var(--accent);">
+            <div class="metric-val" style="color: var(--accent);">104</div>
+            <div class="metric-lbl">Partidos en 2026</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" style="color: var(--emerald-accent);">+62.5%</div>
+            <div class="metric-lbl">Crecimiento</div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">B. Dispersión Horaria y Conflicto Local (Argentina)</h3>
+        <p>
+          La distribución de sedes abarca 4 husos horarios norteamericanos principales (Pacific, Mountain, Central y Eastern Standard Time). Para un usuario residente en Argentina, la diferencia horaria sitúa las transmisiones en ventanas sumamente inconvenientes:
+        </p>
+        <ul>
+          <li><strong>Bloques Matutinos y Vespertinos:</strong> Colisionan con horarios laborales o de clases universitarias.</li>
+          <li><strong>Bloques de Madrugada Extrema:</strong> Partidos programados a las 22:00 o 23:00 de la Costa Oeste inician en Argentina entre la <strong>01:00 hs y las 05:00 hs</strong>.</li>
+        </ul>
+        <p>
+          Sin un filtrado adaptativo, planificar el descanso y la productividad resulta imposible.
+        </p>
+
+        <h3 class="subsection-title">C. Ineficiencia en la Oferta de Contenido Tradicional</h3>
+        <p>
+          Las guías de televisión deportiva habituales y plataformas de streaming tradicionales asumen una agenda homogénea. Su foco comercial reside en maximizar el rating de masas sin considerar que el usuario posee intereses geográficos selectivos (como el seguimiento de confederaciones particulares como CONMEBOL o la UEFA) o límites temporales estrictos de su vida diaria.
+        </p>
+
+        <!-- SVG Diagram: Horarios Offset -->
+        <div class="diagram-container">
+          <svg width="450" height="120" viewBox="0 0 450 120">
+            <!-- Time Line -->
+            <line x1="30" y1="60" x2="420" y2="60" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Points -->
+            <circle cx="50" cy="60" r="6" fill="#1e3a8a"/>
+            <text x="50" y="45" font-family="Outfit" font-size="8pt" font-weight="600" text-anchor="middle" fill="#1e3a8a">Pacífico (PT)</text>
+            <text x="50" y="80" font-family="Inter" font-size="8pt" text-anchor="middle" fill="#64748b">19:00 hs</text>
+
+            <circle cx="150" cy="60" r="6" fill="#1e3a8a"/>
+            <text x="150" y="45" font-family="Outfit" font-size="8pt" font-weight="600" text-anchor="middle" fill="#1e3a8a">Centro (CT)</text>
+            <text x="150" y="80" font-family="Inter" font-size="8pt" text-anchor="middle" fill="#64748b">21:00 hs</text>
+
+            <circle cx="250" cy="60" r="6" fill="#1e3a8a"/>
+            <text x="250" y="45" font-family="Outfit" font-size="8pt" font-weight="600" text-anchor="middle" fill="#1e3a8a">Este (ET)</text>
+            <text x="250" y="80" font-family="Inter" font-size="8pt" text-anchor="middle" fill="#64748b">22:00 hs</text>
+
+            <circle cx="370" cy="60" r="7" fill="#d97706"/>
+            <text x="370" y="45" font-family="Outfit" font-size="8.5pt" font-weight="700" text-anchor="middle" fill="#d97706">Argentina (ART)</text>
+            <text x="370" y="80" font-family="Inter" font-size="8.5pt" font-weight="600" text-anchor="middle" fill="#1e293b">02:00 hs (+1 día)</text>
+            
+            <!-- Connection Arrow -->
+            <path d="M 255 60 Q 312 35 365 55" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,3"/>
+          </svg>
+          <div class="diagram-title">Visualización del Desfase Horario de Norteamérica respecto a la Argentina</div>
+        </div>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 3</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 4: SOLUCIÓN PROPUESTA Y METODOLOGÍA -->
+    <div class="page" id="page-4">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">4. Solución Propuesta</h2>
+        <p>
+          <strong>My World Cup</strong> se materializa como una plataforma Single Page Application (SPA) que aborda estos desafíos mediante un sistema adaptativo del lado del cliente. Sus pilares funcionales clave son:
+        </p>
+        
+        <h3 class="subsection-title">1. Asistente Dinámico de Inicio (Onboarding)</h3>
+        <p>
+          En tres pasos rápidos, el usuario estructura su perfil sin registros invasivos. Se definen las selecciones nacionales preferidas, confederaciones geográficas prioritarias y un perfil opcional de disponibilidad de horarios.
+        </p>
+
+        <!-- Screenshot Placeholder: Settings panel -->
+        <div class="screenshot-container">
+          <img class="screenshot-img" src="./media__1780545756129.png" alt="Configuración de Preferencias del Usuario">
+          <div class="screenshot-caption">Figura 2: Panel de selección de selecciones favoritas y configuración de disponibilidad horaria.</div>
+        </div>
+
+        <h3 class="subsection-title">2. Clasificación Algorítmica en Tres Prioridades</h3>
+        <ul>
+          <li><strong>Imperdibles (Must Watch):</strong> Eventos de altísima relevancia donde juegan los equipos del perfil o fases culminantes del mundial.</li>
+          <li><strong>Recomendados (Worth Watching):</strong> Cruces atractivos y de alta competitividad estadística de interés general o de confederaciones preferidas.</li>
+          <li><strong>Resumen (Watch Highlights):</strong> Partidos con menor impacto deportivo o que ocurren fuera del horario del perfil, sugiriendo verlos de forma diferida.</li>
+        </ul>
+
+        <h3 class="subsection-title">3. Panel Inteligente y Almacenamiento Local</h3>
+        <p>
+          Los datos se actualizan y procesan de forma síncrona en el navegador haciendo uso de <strong>LocalStorage</strong> para garantizar privacidad absoluta, evitando el costo latente y los riesgos de ciberseguridad que implican el almacenamiento de datos personales en servidores en la nube.
+        </p>
+
+        <h2 class="section-title">5. Metodología de Desarrollo</h2>
+        <p>
+          Se aplicó la metodología de <strong>Diseño Centrado en el Usuario (DCU)</strong> y el ciclo ágil de desarrollo de software:
+        </p>
+        
+        <div class="diagram-container">
+          <svg width="480" height="70" viewBox="0 0 480 70">
+            <!-- Phase Blocks -->
+            <rect x="10" y="10" width="95" height="40" rx="4" fill="#0a192f"/>
+            <text x="57" y="34" fill="white" font-family="Outfit" font-size="7.5pt" font-weight="600" text-anchor="middle">1. Curaduría</text>
+
+            <rect x="130" y="10" width="95" height="40" rx="4" fill="#1e3a8a"/>
+            <text x="177" y="34" fill="white" font-family="Outfit" font-size="7.5pt" font-weight="600" text-anchor="middle">2. Modelado</text>
+
+            <rect x="250" y="10" width="95" height="40" rx="4" fill="#059669"/>
+            <text x="297" y="34" fill="white" font-family="Outfit" font-size="7.5pt" font-weight="600" text-anchor="middle">3. Prototipado</text>
+
+            <rect x="370" y="10" width="100" height="40" rx="4" fill="#d97706"/>
+            <text x="420" y="34" fill="white" font-family="Outfit" font-size="7.5pt" font-weight="600" text-anchor="middle">4. Optimización</text>
+
+            <!-- Arrows -->
+            <path d="M 105 30 L 125 30" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M 225 30 L 245 30" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M 345 30 L 365 30" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+              </marker>
+            </defs>
+          </svg>
+          <div class="diagram-title">Fases Metodológicas de Ingeniería del Proyecto</div>
+        </div>
+
+        <ol>
+          <li><strong>Análisis y Curaduría de Datos:</strong> Se integró el fixture completo del torneo (104 partidos), incorporando datos del Ranking Oficial de la FIFA, coeficientes de popularidad y rivalidades de trascendencia histórica en un formato JSON estandarizado.</li>
+          <li><strong>Modelado Matemático:</strong> Formulación de una heurística ponderada para evaluar partidos basándose en datos deportivos objetivos y del perfil del usuario.</li>
+          <li><strong>Prototipado del Front-end (IPO):</strong> Diseño del flujo de interacción y componentes React priorizando la legibilidad en pantallas de computadoras y celulares.</li>
+          <li><strong>Optimización y Calibración:</strong> Refactorización del código para garantizar adaptabilidad móvil y renderizado libre de parpadeo.</li>
+        </ol>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 4</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 5: MOTOR DE RECOMENDACIÓN PARTE 1 -->
+    <div class="page" id="page-5">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">6. Motor de Recomendación: Fórmulas Matemáticas</h2>
+        <p>
+          Para lograr una respuesta rápida en milisegundos en el navegador y garantizar la privacidad, se diseñó un motor basado en heurísticas deterministas ponderadas. A continuación, se detallan las variables del modelo.
+        </p>
+
+        <h3 class="subsection-title">1. Puntuación de la Instancia del Torneo ($S_{\text{etapa}}$)</h3>
+        <p>
+          Premia la trascendencia del encuentro de acuerdo a su fase en la Copa del Mundo:
+        </p>
+        <div class="math-block">
+          $$S_{\text{etapa}} \in \{10, 20, 35, 55, 65, 75, 100\}$$$$\begin{array}{l|c}
+          \textbf{Fase del Torneo} & \boldsymbol{S_{\text{etapa}}} \\
+          \hline
+          \text{Fase de Grupos (Group Stage)} & 10 \\
+          \text{Dieciseisavos de Final (Round of 32)} & 20 \\
+          \text{Octavos de Final (Round of 16)} & 35 \\
+          \text{Cuartos de Final (Quarter Finals)} & 55 \\
+          \text{Tercer Puesto (Third Place Match)} & 65 \\
+          \text{Semifinales (Semi Finals)} & 75 \\
+          \text{Final} & 100 \\
+          \end{array}$$
+        </div>
+
+        <h3 class="subsection-title">2. Puntuación de Popularidad ($S_{\text{pop}}$)</h3>
+        <p>
+          Determina la magnitud de la audiencia e interés social del cruce, calculándose como la media aritmética del índice de popularidad asignado a cada selección ($P_{\text{local}}$ y $P_{\text{visita}}$) en escala de 0 a 100. En caso de selecciones no especificadas en la base de datos local, se asigna una popularidad por defecto de <strong>45</strong>:
+        </p>
+        <div class="math-block">
+          $$S_{\text{pop}} = \frac{P_{\text{local}} + P_{\text{visita}}}{2}$$
+        </div>
+
+        <h3 class="subsection-title">3. Puntuación de Ranking de Calidad Deportiva ($S_{\text{rank}}$)</h3>
+        <p>
+          Evalúa la paridad competitiva a nivel de élite. Utiliza la media aritmética del puesto FIFA ($\bar{R}$), donde los equipos sin ranking registrado adoptan un valor por defecto de <strong>60</strong>, y aplica una transformación lineal inversa escalada:
+        </p>
+        <div class="math-block">
+          $$\bar{R} = \frac{R_{\text{local}} + R_{\text{visita}}}{2}$$$$S_{\text{rank}} = \max\left(0, \min\left(100, \text{round}\left(100 - (\bar{R} - 1) \cdot 1.6\right)\right)\right)$$
+        </div>
+        <p>
+          Esta fórmula garantiza que enfrentamientos entre equipos Top (cercanos a 1) obtengan 100 puntos y decrece gradualmente a medida que las posiciones bajan.
+        </p>
+
+        <h3 class="subsection-title">4. Puntuación de Rivalidad ($S_{\text{riv}}$)</h3>
+        <p>
+          Suma un plus en función del grado de rivalidad histórica mapeado en la base de datos ($B_{\text{riv}}$, escala 0 a 30). Si no existe una rivalidad registrada entre ambos contendientes, se establece un puntaje de <strong>0</strong>:
+        </p>
+        <div class="math-block">
+          $$S_{\text{riv}} = \min\left(100, \text{round}\left(\frac{B_{\text{riv}}}{30} \cdot 100\right)\right)$$
+        </div>
+
+        <h3 class="subsection-title">5. Puntuación Deportiva Objetiva ($Score_{\text{objetivo}}$)</h3>
+        <p>
+          Combina las variables en una ponderación matemática:
+        </p>
+        <div class="math-block">
+          $$Score_{\text{objetivo}} = 0.55 \cdot S_{\text{etapa}} + 0.25 \cdot S_{\text{pop}} + 0.15 \cdot S_{\text{rank}} + 0.05 \cdot S_{\text{riv}}$$
+        </div>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 5</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 6: MOTOR DE RECOMENDACIÓN PARTE 2 -->
+    <div class="page" id="page-6">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h3 class="subsection-title">6. Puntuación Personal del Usuario ($Score_{\text{personal}}$)</h3>
+        <p>
+          Representa el perfil de afinidad subjetiva del usuario:
+        </p>
+        <ul>
+          <li>$F_{\text{equipo}} = 100$ si el usuario sigue al menos a una de las selecciones contendientes; de lo contrario $0$.</li>
+          <li>$F_{\text{region}} = 100$ si alguna de las selecciones es de sus confederaciones de interés; de lo contrario $0$.</li>
+        </ul>
+        <div class="math-block">
+          $$Score_{\text{personal}} = 0.70 \cdot F_{\text{equipo}} + 0.30 \cdot F_{\text{region}}$$
+        </div>
+
+        <h3 class="subsection-title">7. Puntuación Recomendada Base ($Score_{\text{final}}$)</h3>
+        <p>
+          Fusiona los atributos deportivos del partido y el perfil de afinidades:
+        </p>
+        <div class="math-block">
+          $$Score_{\text{final}} = \text{round}\left(0.60 \cdot Score_{\text{objetivo}} + 0.40 \cdot Score_{\text{personal}}\right)$$
+        </div>
+
+        <h3 class="subsection-title">8. Ajuste Horario Personalizado</h3>
+        <p>
+          Si el usuario configura ventanas horarias preferidas, se calcula la hora de inicio convertida al huso local de Argentina ($H_{\text{partido}}$). El puntaje de disponibilidad ($Score_{\text{disp}}$) y su distintivo visual (badge) se calculan siguiendo la siguiente estructura lógica:
+        </p>
+
+        <!-- SVG Flowchart of Time Scoring -->
+        <div class="diagram-container" style="padding: 0.8rem;">
+          <svg width="460" height="90" viewBox="0 0 460 90">
+            <!-- Box Ideal -->
+            <rect x="10" y="10" width="130" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+            <text x="75" y="30" fill="#065f46" font-family="Outfit" font-size="7.5pt" font-weight="700" text-anchor="middle">En Rango Ideal</text>
+            <text x="75" y="44" fill="#059669" font-family="Inter" font-size="7pt" font-weight="600" text-anchor="middle">En Ventana ➔ 100 pts</text>
+            <text x="75" y="54" fill="#10b981" font-family="Inter" font-size="6.5pt" font-weight="700" text-anchor="middle">🟢 Horario Ideal</text>
+
+            <!-- Box Aceptable -->
+            <rect x="165" y="10" width="130" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+            <text x="230" y="30" fill="#92400e" font-family="Outfit" font-size="7.5pt" font-weight="700" text-anchor="middle">Ventana Cercana</text>
+            <text x="230" y="44" fill="#d97706" font-family="Inter" font-size="7pt" font-weight="600" text-anchor="middle">Tolerancia ±2hs ➔ 70 pts</text>
+            <text x="230" y="54" fill="#f59e0b" font-family="Inter" font-size="6.5pt" font-weight="700" text-anchor="middle">🟡 Horario Aceptable</text>
+
+            <!-- Box Complicado -->
+            <rect x="320" y="10" width="130" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="385" y="30" fill="#991b1b" font-family="Outfit" font-size="7.5pt" font-weight="700" text-anchor="middle">Fuera de Rango</text>
+            <text x="385" y="44" fill="#dc2626" font-family="Inter" font-size="7pt" font-weight="600" text-anchor="middle">Diferencia > 2hs ➔ 30 pts</text>
+            <text x="385" y="54" fill="#ef4444" font-family="Inter" font-size="6.5pt" font-weight="700" text-anchor="middle">🔴 Horario Complicado</text>
+          </svg>
+          <div class="diagram-title">Clasificación Lógica del Score de Disponibilidad Horaria ($Score_{\text{disp}}$)</div>
+        </div>
+
+        <p>
+          Se incluye lógica especial para calcular rangos que cruzan la medianoche (cuando la hora de inicio es mayor que la de fin) y para el cálculo de tolerancias horarias expandidas de ±2 horas. Finalmente, el score definitivo se reduce levemente (un 10% de peso) para reflejar la disponibilidad horaria sin ocultar partidos de alta trascendencia histórica:
+        </p>
+        <div class="math-block">
+          $$Score_{\text{ajustado}} = \text{round}\left(0.90 \cdot Score_{\text{final}} + 0.10 \cdot Score_{\text{disp}}\right)$$
+        </div>
+
+        <h3 class="subsection-title">9. Lógica de Categorización en Clases</h3>
+        <p>
+          Para asignar la categoría final (representada en código por <code>'Must Watch'</code>, <code>'Worth Watching'</code> y <code>'Watch Highlights'</code> y traducida en la interfaz como <strong>"Imperdibles"</strong>, <strong>"Recomendados"</strong> y <strong>"Resumen"</strong>), se evalúan las siguientes reglas lógicas en orden estricto de prioridad:
+        </p>
+        <ol>
+          <li><strong>Imperdibles (Must Watch):</strong> Si el partido involucra a un equipo favorito en las preferencias del usuario ($homeFav$ o $awayFav$) o se trata de una de las <strong>Semifinales</strong> o la <strong>Final</strong> del Mundial.</li>
+          <li><strong>Recomendados (Worth Watching):</strong> Si el cruce se produce en la fase de <strong>Octavos de Final</strong> o <strong>Cuartos de Final</strong>, involucra a una región preferida ($homeRegionFav$ o $awayRegionFav$) o posee un puntaje deportivo objetivo alto ($Score_{\text{objetivo}} \ge 60$).</li>
+          <li><strong>Resumen (Watch Highlights):</strong> Todo cruce restante.</li>
+        </ol>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 6</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 7: EXPERIENCIA DE USUARIO (UX) -->
+    <div class="page" id="page-7">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">7. Experiencia de Usuario (UX) e Interfaces</h2>
+        <p>
+          El desarrollo de la interfaz de <strong>My World Cup</strong> se ha estructurado bajo las directrices modernas de interacción persona-ordenador (IPO), buscando mitigar la fatiga ocular a través de una paleta oscura y asegurar la facilidad de uso en pantallas de celulares y computadoras.
+        </p>
+
+        <h3 class="subsection-title">A. Diseño Responsivo y Panel Lateral Deslizable (Drawer)</h3>
+        <p>
+          El sistema detecta de forma reactiva el tamaño de la ventana gráfica:
+        </p>
+        <ul>
+          <li><strong>En Computadoras de Escritorio (Desktop):</strong> Se presenta una interfaz estática de doble sección (<code>md:h-screen md:overflow-hidden</code>). La barra de navegación lateral y el estado del perfil quedan fijos de manera permanente a la izquierda, mientras que el listado de partidos y desgloses de scoring scrollan de forma independiente a la derecha.</li>
+          <li><strong>En Celulares y Tablets (Mobile):</strong> El menú se retrae para optimizar el espacio físico de visualización. En su lugar, se incorpora un botón hamburguesa en la parte superior izquierda que despliega un drawer deslizable desde el lateral de manera fluida mediante clases dinámicas de Tailwind (<code>translate-x-0</code> y <code>-translate-x-full</code>).</li>
+        </ul>
+        <p>
+          Se incorporó lógica inteligente para cerrar el menú deslizable tras tocar enlaces de navegación ordinarios, pero manteniéndolo intencionalmente abierto al interactuar con el panel de "Configuración", facilitando al usuario realizar múltiples configuraciones sin tener que redesplegar el menú.
+        </p>
+
+        <h3 class="subsection-title">B. Tarjeta Spotlight (Foco Visual Principal)</h3>
+        <p>
+          En la sección superior del dashboard principal, el sistema aísla y destaca el partido que mayor relevancia matemática tiene para el usuario. Para optimizar su lectura en dispositivos móviles, se implementó una refactorización de bloques apilados verticalmente (<code>flex-col md:flex-row</code>), evitando que los nombres de los países se superpongan o rompan el ranking oficial en múltiples líneas de texto.
+        </p>
+
+        <h3 class="subsection-title">C. Banderas Vectoriales e Identidad Visual</h3>
+        <p>
+          Para solventar la limitación que poseen los dispositivos con sistema operativo Windows en la representación nativa de emojis de banderas (que renderiza caracteres ASCII como "AR", "BR" o iconos grises), se implementó una utilidad para consumir los recursos gráficos del CDN <strong>Flagpedia/Flagcdn</strong>. El sistema mapea las 48 selecciones clasificadas y ajusta el tamaño de la imagen según la densidad de píxeles del elemento de la tarjeta.
+        </p>
+
+        <!-- Screenshot Placeholder: Mobile Menu -->
+        <div class="screenshot-container">
+          <img class="screenshot-img" src="./media__1780547649915.png" alt="Vista del Menú Drawer en Mobile">
+          <div class="screenshot-caption">Figura 1: Interfaz del Menú Deslizable (Drawer) y Backdrop en pantallas móviles.</div>
+        </div>
+
+        <h3 class="subsection-title">D. Filtrado Global por Etapas</h3>
+        <p>
+          La aplicación implementa un filtro de estado global (<code>stageFilter</code>) con las opciones "Fase de Grupos", "Fase Eliminatoria" y "Todo el Torneo". Este filtro restringe los partidos procesados antes de renderizarlos en cualquier vista (Dashboard, Explorador, Guardados y Vistos), permitiendo una organización selectiva del calendario.
+        </p>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 7</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 8: TECNOLOGÍAS Y CASOS DE USO -->
+    <div class="page" id="page-8">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">8. Tecnologías Utilizadas</h2>
+        <p>
+          La arquitectura de desarrollo está construida íntegramente del lado del cliente (Client-Side Rendering), lo que elimina costos de infraestructura de servidor, reduce la huella de carbono digital y garantiza que el procesamiento del algoritmo de recomendación se ejecute instantáneamente:
+        </p>
+        <ul>
+          <li><strong>React 19 (v19.2):</strong> Biblioteca para la construcción de interfaces reactivas basadas en componentes. Hace uso de hooks (<code>useState</code>, <code>useMemo</code>, <code>useCallback</code>) para mantener un ciclo de renderizado optimizado.</li>
+          <li><strong>TypeScript:</strong> Aporta tipado estricto a las entidades críticas del negocio (partidos, perfiles, desgloses de puntuación, confederaciones), evitando fallas en tiempo de ejecución.</li>
+          <li><strong>TailwindCSS (v4.3):</strong> Utiliza variables de CSS personalizadas integradas de forma nativa a través del bloque <code>@theme</code> en <code>index.css</code>.</li>
+          <li><strong>React Router DOM (v7.1):</strong> Proporciona un enrutamiento rápido en el navegador utilizando <code>HashRouter</code>, asegurando que la navegación persista al recargar la página.</li>
+          <li><strong>LocalStorage API:</strong> Persistencia local e inmediata de la configuración del usuario y los marcadores de partidos vistos o favoritos.</li>
+        </ul>
+
+        <h2 class="section-title">9. Casos de Uso y Resultados Comparativos</h2>
+        <p>
+          A continuación, se detalla un caso de prueba para validar el comportamiento del motor de recomendación.
+        </p>
+
+        <!-- Screenshot Placeholder: Desktop Dashboard -->
+        <div class="screenshot-container">
+          <img class="screenshot-img" src="./media__1780545751943.png" alt="Vista General del Dashboard en Escritorio">
+          <div class="screenshot-caption">Figura 3: Tablero principal (Dashboard) con el partido destacado y recomendaciones en la versión de escritorio.</div>
+        </div>
+
+        <div class="callout-box">
+          <div class="callout-box-title">Perfil de Usuario Evaluado en el Simulador:</div>
+          <strong>Equipos Favoritos:</strong> Argentina, Francia.<br>
+          <strong>Confederaciones de Interés:</strong> CONMEBOL (Sudamérica), UEFA (Europa).<br>
+          <strong>Disponibilidad Horaria:</strong> 18:00 hs a 23:00 hs (Hora Local de Argentina).
+        </div>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Partido</th>
+              <th>Fase</th>
+              <th>Hora Arg</th>
+              <th>Badge (Score)</th>
+              <th>Score Final</th>
+              <th>Categoría</th>
+              <th>Justificación Generada por el Motor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Argentina vs. Argelia</strong></td>
+              <td>Fase de Grupos</td>
+              <td>20:00 hs</td>
+              <td>🟢 Horario Ideal (100)</td>
+              <td><strong>98%</strong></td>
+              <td>⭐ Imperdibles (Must Watch)</td>
+              <td>Seguís a Argentina. Dentro de tu horario habitual.</td>
+            </tr>
+            <tr>
+              <td><strong>Francia vs. Senegal</strong></td>
+              <td>Fase de Grupos</td>
+              <td>15:00 hs</td>
+              <td>🟡 Horario Aceptable (70)</td>
+              <td><strong>91%</strong></td>
+              <td>⭐ Imperdibles (Must Watch)</td>
+              <td>Seguís a Francia. Cerca de tu horario habitual.</td>
+            </tr>
+            <tr>
+              <td><strong>Uruguay vs. España</strong></td>
+              <td>Fase de Grupos</td>
+              <td>18:00 hs</td>
+              <td>🟢 Horario Ideal (100)</td>
+              <td><strong>79%</strong></td>
+              <td>📈 Recomendados (Worth Watching)</td>
+              <td>Tiene un equipo de tu región de interés. Cruce de gigantes.</td>
+            </tr>
+            <tr>
+              <td><strong>Austria vs. Jordania</strong></td>
+              <td>Fase de Grupos</td>
+              <td>21:00 hs</td>
+              <td>🟢 Horario Ideal (100)</td>
+              <td><strong>44%</strong></td>
+              <td>⚽ Resumen (Watch Highlights)</td>
+              <td>Partido competitivo de la Copa Mundial de la FIFA.</td>
+            </tr>
+            <tr>
+              <td><strong>Canadá vs. Argelia</strong></td>
+              <td>Fase de Grupos</td>
+              <td>02:00 hs</td>
+              <td>🔴 Horario Complicado (30)</td>
+              <td><strong>37%</strong></td>
+              <td>⚽ Resumen (Watch Highlights)</td>
+              <td>⚠️ Se juega fuera de tu horario habitual.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 8</span>
+      </div>
+    </div>
+
+
+    <!-- PAGE 9: CONCLUSIONES Y TRABAJO FUTURO -->
+    <div class="page" id="page-9">
+      <div class="running-header">
+        <span>Competencia "Tu tiempo, tu Mundial"</span>
+        <span>My World Cup — Informe Metodológico</span>
+      </div>
+
+      <div class="page-content">
+        <h2 class="section-title">10. Conclusiones</h2>
+        <p>
+          El desarrollo de la plataforma <strong>My World Cup</strong> demuestra que es viable técnicamente proporcionar una solución altamente personalizada para el consumo de información deportiva sin necesidad de contar con infraestructuras en el lado del servidor complejas o de comprometer la privacidad del usuario.
+        </p>
+        <p>
+          El algoritmo híbrido desarrollado equilibra de manera eficiente los datos objetivos de la competición con las preferencias subjetivas y restricciones de tiempo personales de cada usuario. Se ha comprobado que el ajuste de un 10% en el factor horario es suficiente para guiar la atención sin distorsionar el valor deportivo de los partidos clave.
+        </p>
+        <p>
+          Desde la perspectiva de interacción persona-ordenador (IPO), la introducción del menú responsivo móvil deslizable y la refactorización de la tarjeta de partido destacado evitan la sobrecarga y mejoran sustancialmente la experiencia visual. Esto convierte al sistema en un valioso organizador de tiempo personal y una solución efectiva para disfrutar de la Copa del Mundo 2026.
+        </p>
+
+        <h2 class="section-title">11. Trabajo Futuro</h2>
+        <p>
+          De cara a próximas evoluciones de la plataforma, se plantean las siguientes propuestas de ingeniería:
+        </p>
+        
+        <h3 class="subsection-title">1. Integración de una API de Datos en Tiempo Real</h3>
+        <p>
+          Reemplazar la base de datos local estática mediante la integración de APIs públicas (ej. API-Football) para mostrar automáticamente resultados en vivo, estadísticas en curso y variaciones del fixture en tiempo real.
+        </p>
+
+        <h3 class="subsection-title">2. Sistema de Notificaciones Web Push</h3>
+        <p>
+          Implementar un sistema de alertas en segundo plano (Service Workers) que notifique al navegador del usuario 15 minutos antes de que comience un partido marcado como "Imperdible", manteniendo la operatividad local.
+        </p>
+
+        <h3 class="subsection-title">3. Sincronización Multiplataforma en la Nube</h3>
+        <p>
+          Ofrecer de forma opcional el registro y sincronización del perfil en un proveedor descentralizado (como Supabase o Firebase) para compartir la agenda de partidos guardados entre múltiples dispositivos móviles y computadoras.
+        </p>
+
+        <!-- Final Signature / Visual closing -->
+        <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+          <p style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; font-size: 9pt;">
+            Universidad Austral – Competencia "Tu tiempo, tu Mundial"
+          </p>
+          <p style="font-size: 8.5pt; color: var(--text-light); margin-top: 0.3rem;">
+            Pilar, Buenos Aires, Argentina — Año Académico 2026
+          </p>
+        </div>
+      </div>
+
+      <div class="running-footer">
+        <span>Facultad de Ingeniería</span>
+        <span>Página 9</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -207,47 +207,38 @@ export const recommendationEngine = {
       const timeEnd = endHour + endMin / 60;
       const timeMatch = matchHour + matchMinute / 60;
 
-      // Check madrugada extrema: Entre 01:00 y 05:00
-      const isMadrugada = timeMatch >= 1.0 && timeMatch <= 5.0;
-
-      if (isMadrugada) {
-        availabilityScore = 0;
-        availabilityBadge = 'Complicado';
-        explanations.push('🌙 Partido de madrugada. Quizás prefieras ver el resumen.');
+      // Check within range
+      let inRange = false;
+      if (timeStart <= timeEnd) {
+        inRange = timeMatch >= timeStart && timeMatch <= timeEnd;
       } else {
-        // Check within range
-        let inRange = false;
-        if (timeStart <= timeEnd) {
-          inRange = timeMatch >= timeStart && timeMatch <= timeEnd;
+        inRange = timeMatch >= timeStart || timeMatch <= timeEnd;
+      }
+
+      if (inRange) {
+        availabilityScore = 100;
+        availabilityBadge = 'Ideal';
+        explanations.push('🕒 Se juega dentro de tu horario habitual para ver fútbol.');
+      } else {
+        // Check within 2 hours
+        const timeStartExpanded = (timeStart - 2 + 24) % 24;
+        const timeEndExpanded = (timeEnd + 2) % 24;
+        
+        let inExpandedRange = false;
+        if (timeStartExpanded <= timeEndExpanded) {
+          inExpandedRange = timeMatch >= timeStartExpanded && timeMatch <= timeEndExpanded;
         } else {
-          inRange = timeMatch >= timeStart || timeMatch <= timeEnd;
+          inExpandedRange = timeMatch >= timeStartExpanded || timeMatch <= timeEndExpanded;
         }
 
-        if (inRange) {
-          availabilityScore = 100;
-          availabilityBadge = 'Ideal';
-          explanations.push('🕒 Se juega dentro de tu horario habitual para ver fútbol.');
+        if (inExpandedRange) {
+          availabilityScore = 70;
+          availabilityBadge = 'Aceptable';
+          explanations.push('🕒 Se juega cerca de tu horario habitual.');
         } else {
-          // Check within 2 hours
-          const timeStartExpanded = (timeStart - 2 + 24) % 24;
-          const timeEndExpanded = (timeEnd + 2) % 24;
-          
-          let inExpandedRange = false;
-          if (timeStartExpanded <= timeEndExpanded) {
-            inExpandedRange = timeMatch >= timeStartExpanded && timeMatch <= timeEndExpanded;
-          } else {
-            inExpandedRange = timeMatch >= timeStartExpanded || timeMatch <= timeEndExpanded;
-          }
-
-          if (inExpandedRange) {
-            availabilityScore = 70;
-            availabilityBadge = 'Aceptable';
-            explanations.push('🕒 Se juega cerca de tu horario habitual.');
-          } else {
-            availabilityScore = 30;
-            availabilityBadge = 'Complicado';
-            explanations.push('⚠️ Se juega fuera de tu horario habitual.');
-          }
+          availabilityScore = 30;
+          availabilityBadge = 'Complicado';
+          explanations.push('⚠️ Se juega fuera de tu horario habitual.');
         }
       }
 
