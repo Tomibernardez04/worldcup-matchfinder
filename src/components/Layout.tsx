@@ -90,11 +90,6 @@ export const Layout: React.FC<LayoutProps> = ({
 
         {/* Quick User Stats Dashboard */}
         <div className="bg-slate-900/60 rounded-xl p-3 border border-border-subtle space-y-2.5">
-          <div className="flex justify-between items-center text-xs text-slate-400">
-            <span className="font-semibold uppercase tracking-wider text-[10px]">Tus Estadísticas</span>
-            <span className="text-[10px] text-brand-primary font-bold">ACTIVO</span>
-          </div>
-          
           <div className="grid grid-cols-2 gap-2 text-center">
             <div className="bg-bg-dark/60 rounded-xl p-2 border border-slate-800/40">
               <Bookmark className="w-4 h-4 mx-auto text-brand-accent mb-1" />

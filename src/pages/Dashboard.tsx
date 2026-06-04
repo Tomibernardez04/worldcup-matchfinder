@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Flame, Sparkles, AlertTriangle, RefreshCw, EyeOff, Eye, Info } from 'lucide-react';
+import { Flame, Sparkles, AlertTriangle, RefreshCw, EyeOff, Eye, Info, Bookmark, Check } from 'lucide-react';
 import type { Match, UserProfile, StageFilter } from '../types';
 import MatchCard from '../components/MatchCard';
 import SkeletonLoader from '../components/SkeletonLoader';
@@ -358,6 +358,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                                   : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
                                 }`}
                             >
+                              <Bookmark className={`w-3.5 h-3.5 ${isSaved(heroMatch.id) ? 'fill-current' : ''}`} />
                               <span>{isSaved(heroMatch.id) ? 'Guardado' : 'Guardar'}</span>
                             </button>
 
@@ -368,6 +369,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                                   : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
                                 }`}
                             >
+                              <Check className={`w-3.5 h-3.5 ${isWatched(heroMatch.id) ? 'stroke-[3px]' : ''}`} />
                               <span>{isWatched(heroMatch.id) ? 'Visto' : 'Marcar Visto'}</span>
                             </button>
                           </div>
