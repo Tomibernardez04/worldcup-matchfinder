@@ -21,7 +21,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   onToggleWatched
 }) => {
   const score = match.imperdibilityScore || 0;
-  
+
   // Decide score badge color scheme
   let scoreColorClass = 'text-slate-400 border-slate-700 bg-slate-950/80';
   let glowClass = '';
@@ -76,7 +76,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             </span>
           )}
         </div>
-        
+
         <div className={`flex flex-col items-center justify-center border w-12 h-12 rounded-full font-bold text-sm tracking-tighter ${scoreColorClass}`}>
           <span className="text-[10px] uppercase font-semibold text-slate-400 leading-none">Partido</span>
           <span className="text-base leading-none mt-0.5">{score}</span>
@@ -97,7 +97,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               {translateTeamName(match.homeTeam.name)}
             </span>
             <span className="text-[10px] text-slate-400 uppercase mt-0.5 tracking-wider font-medium">
-              Puesto #{match.homeTeam.ranking > 85 ? '+85' : match.homeTeam.ranking}
+              Puesto #{match.homeTeam.ranking > 85 ? '85+' : match.homeTeam.ranking}
             </span>
           </div>
 
@@ -129,7 +129,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               {translateTeamName(match.awayTeam.name)}
             </span>
             <span className="text-[10px] text-slate-400 uppercase mt-0.5 tracking-wider font-medium">
-              Puesto #{match.awayTeam.ranking > 85 ? '+85' : match.awayTeam.ranking}
+              Puesto #{match.awayTeam.ranking > 85 ? '85+' : match.awayTeam.ranking}
             </span>
           </div>
         </div>
@@ -170,11 +170,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({
       <div className="p-4 border-t border-slate-800 bg-slate-950/40 flex justify-between gap-3 mt-auto">
         <button
           onClick={onToggleSave}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer ${
-            isSaved
-              ? 'bg-brand-accent/15 border-brand-accent text-brand-accent hover:bg-brand-accent/25'
-              : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500 hover:text-slate-100'
-          }`}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer ${isSaved
+            ? 'bg-brand-accent/15 border-brand-accent text-brand-accent hover:bg-brand-accent/25'
+            : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500 hover:text-slate-100'
+            }`}
           title={isSaved ? 'Quitar de Guardados' : 'Guardar Partido'}
         >
           <Bookmark className={`w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}`} />
@@ -183,11 +182,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 
         <button
           onClick={onToggleWatched}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer ${
-            isWatched
-              ? 'bg-brand-primary/15 border-brand-primary text-brand-primary hover:bg-brand-primary/25'
-              : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500 hover:text-slate-100'
-          }`}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer ${isWatched
+            ? 'bg-brand-primary/15 border-brand-primary text-brand-primary hover:bg-brand-primary/25'
+            : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500 hover:text-slate-100'
+            }`}
           title={isWatched ? 'Marcar como no visto' : 'Marcar como visto'}
         >
           <Check className={`w-3.5 h-3.5 ${isWatched ? 'stroke-[3px]' : ''}`} />

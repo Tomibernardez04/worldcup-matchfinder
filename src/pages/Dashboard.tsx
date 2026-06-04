@@ -173,8 +173,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 key={f}
                 onClick={() => onStageFilterChange(f)}
                 className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-all cursor-pointer ${stageFilter === f
-                    ? 'bg-brand-primary text-bg-dark shadow'
-                    : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-brand-primary text-bg-dark shadow'
+                  : 'text-slate-400 hover:text-slate-200'
                   }`}
               >
                 {f === 'groups' && '🏆 Fase de Grupos'}
@@ -188,8 +188,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <button
             onClick={() => setHideWatched(!hideWatched)}
             className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 ${hideWatched
-                ? 'bg-brand-primary/10 border-brand-primary text-brand-primary'
-                : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+              ? 'bg-brand-primary/10 border-brand-primary text-brand-primary'
+              : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
               }`}
           >
             {hideWatched ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
@@ -278,7 +278,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                               />
                               <div className="min-w-0 w-full">
                                 <h4 className="text-sm md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.homeTeam.name)}</h4>
-                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.homeTeam.ranking > 85 ? '+85' : heroMatch.homeTeam.ranking}</span>
+                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.homeTeam.ranking > 85 ? '85+' : heroMatch.homeTeam.ranking}</span>
                               </div>
                             </div>
 
@@ -290,7 +290,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-5/12 justify-end text-center md:text-right">
                               <div className="min-w-0 w-full order-2 md:order-1">
                                 <h4 className="text-sm md:text-2xl font-extrabold text-white truncate">{translateTeamName(heroMatch.awayTeam.name)}</h4>
-                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.awayTeam.ranking > 85 ? '+85' : heroMatch.awayTeam.ranking}</span>
+                                <span className="text-[10px] md:text-xs text-slate-400 font-semibold block md:inline">Puesto FIFA #{heroMatch.awayTeam.ranking > 85 ? '85+' : heroMatch.awayTeam.ranking}</span>
                               </div>
                               <img
                                 src={getFlagUrl(heroMatch.awayTeam.code, 40)}
@@ -354,8 +354,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
                             <button
                               onClick={() => onToggleSave(heroMatch.id)}
                               className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${isSaved(heroMatch.id)
-                                  ? 'bg-brand-accent/20 border-brand-accent text-brand-accent'
-                                  : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
+                                ? 'bg-brand-accent/20 border-brand-accent text-brand-accent'
+                                : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
                                 }`}
                             >
                               <Bookmark className={`w-3.5 h-3.5 ${isSaved(heroMatch.id) ? 'fill-current' : ''}`} />
@@ -365,8 +365,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
                             <button
                               onClick={() => onToggleWatched(heroMatch.id)}
                               className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${isWatched(heroMatch.id)
-                                  ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
-                                  : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
+                                ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
+                                : 'bg-transparent border-slate-700 text-slate-300 hover:border-slate-500'
                                 }`}
                             >
                               <Check className={`w-3.5 h-3.5 ${isWatched(heroMatch.id) ? 'stroke-[3px]' : ''}`} />
